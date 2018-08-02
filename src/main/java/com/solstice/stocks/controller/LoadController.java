@@ -1,6 +1,6 @@
 package com.solstice.stocks.controller;
 
-import com.solstice.stocks.data.Stock;
+import com.solstice.stocks.data.Quote;
 import com.solstice.stocks.repository.StockRepository;
 import com.solstice.stocks.service.JsonService;
 import java.io.FileOutputStream;
@@ -42,7 +42,7 @@ public class LoadController {
 
 
   @PostMapping
-  public ResponseEntity<List<Stock>> load(@RequestParam(required = false) boolean refresh) {
+  public ResponseEntity<List<Quote>> load(@RequestParam(required = false) boolean refresh) {
     if (refresh) {
       try{
         log.info("Refreshing json dataset from url");
@@ -54,13 +54,13 @@ public class LoadController {
         e.printStackTrace();
       }
     }
-    List<Stock> stocks = jsonService.getStocksFromJson();
-    stockRepository.saveAll(stocks);
-    return new ResponseEntity<>(stocks, HttpStatus.CREATED);
+    List<Quote> quotes = jsonService.getStocksFromJson();
+    stockRepository.saveAll(quotes);
+    return new ResponseEntity<>(quotes, HttpStatus.CREATED);
   }
 
   @GetMapping
-  public List<Stock> getStocks() {
-    return (List<Stock>)stockRepository.findAll();
+  public List<Quote> getStocks() {
+    return (List<Quote>)stockRepository.findAll();
   }
 }

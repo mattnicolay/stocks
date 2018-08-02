@@ -1,25 +1,30 @@
 package com.solstice.stocks.data;
 
 import java.sql.Timestamp;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity(name = "stocks")
-public class Stock {
+public class Quote {
 
   @Id
   @GeneratedValue
   private int id;
+  @Column(nullable = false)
   private String symbol;
+  @Column(nullable = false)
   private double price;
+  @Column(nullable = false)
   private int volume;
+  @Column(nullable = false)
   private Timestamp date;
 
-  public Stock() {
+  public Quote() {
   }
 
-  public Stock(String symbol, double price, int volume, Timestamp date) {
+  public Quote(String symbol, double price, int volume, Timestamp date) {
     this.symbol = symbol;
     this.price = price;
     this.volume = volume;

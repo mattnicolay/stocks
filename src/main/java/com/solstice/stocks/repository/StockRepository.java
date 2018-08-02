@@ -1,8 +1,8 @@
 package com.solstice.stocks.repository;
 
-import com.solstice.stocks.data.Stock;
+import com.solstice.stocks.data.Quote;
 import org.springframework.data.repository.CrudRepository;
 
-public interface StockRepository extends CrudRepository<Stock, Integer> {
+public interface StockRepository extends CrudRepository<Quote, Integer> {
 
 }
