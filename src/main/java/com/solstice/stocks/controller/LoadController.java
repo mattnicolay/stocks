@@ -55,12 +55,12 @@ public class LoadController {
       }
     }
     List<Stock> stocks = jsonService.getStocksFromJson();
-    stockRepository.insertStocks(stocks);
+    stockRepository.saveAll(stocks);
     return new ResponseEntity<>(stocks, HttpStatus.CREATED);
   }
 
   @GetMapping
   public List<Stock> getStocks() {
-    return stockRepository.getStocks();
+    return (List<Stock>)stockRepository.findAll();
   }
 }
