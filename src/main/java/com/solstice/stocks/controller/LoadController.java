@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,5 +57,10 @@ public class LoadController {
     List<Stock> stocks = jsonService.getStocksFromJson();
     stockRepository.insertStocks(stocks);
     return new ResponseEntity<>(stocks, HttpStatus.CREATED);
+  }
+
+  @GetMapping
+  public List<Stock> getStocks() {
+    return stockRepository.getStocks();
   }
 }
