@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Stock {
 
-  private String id;
+//  private int id;
   private String symbol;
   private double price;
   private int volume;
@@ -13,21 +13,20 @@ public class Stock {
   public Stock() {
   }
 
-  public Stock(String id, String symbol, double price, int volume, Timestamp date) {
-    this.id = id;
+  public Stock(String symbol, double price, int volume, Timestamp date) {
     this.symbol = symbol;
     this.price = price;
     this.volume = volume;
     this.date = date;
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
+//  public int getId() {
+//    return id;
+//  }
+//
+//  public void setId(int id) {
+//    this.id = id;
+//  }
 
   public String getSymbol() {
     return symbol;
