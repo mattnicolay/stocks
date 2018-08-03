@@ -1,6 +1,7 @@
 package com.solstice.stocks.controller;
 
-import com.solstice.stocks.data.Quote;
+import com.solstice.stocks.data.AggregateQuote;
+import com.solstice.stocks.repository.StockRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,9 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuoteController {
 
   private final Logger log = LoggerFactory.getLogger(this.getClass());
+  private final long ONE_DAY_IN_MILLISECONDS = 86400000L;
+
+  private StockRepository stockRepository;
+
+  public QuoteController(StockRepository stockRepository) {
+    this.stockRepository = stockRepository;
+  }
 
   @GetMapping("/{symbol}/{dateString}")
-  public Quote getStock(@PathVariable String symbol, @PathVariable String dateString) {
+  public AggregateQuote getStock(@PathVariable String symbol, @PathVariable String dateString) {
     Date parsedDate = new Date();
     try {
       parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
@@ -25,11 +33,10 @@ public class QuoteController {
       log.error("Failed to parse date in url. Stacktrace:");
       e.printStackTrace();
     }
-    //get highest price of stock
+    Timestamp date = new Timestamp(parsedDate.getTime());
 
-    //get lowest price of stock
 
-    //get total volume
-    return new Quote("test", 0, 0, new Timestamp(parsedDate.getTime()));
+    return stockRepository.getAggregateData(symbol, date,
+        new Timestamp(date.getTime() + ONE_DAY_IN_MILLISECONDS));
   }
 }
