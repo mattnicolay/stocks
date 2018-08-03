@@ -4,7 +4,9 @@ import com.solstice.stocks.data.AggregateQuote;
 import com.solstice.stocks.repository.StockRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,17 +25,39 @@ public class QuoteController {
     this.stockRepository = stockRepository;
   }
 
-  @GetMapping("/{symbol}/{dateString}")
-  public AggregateQuote getStock(@PathVariable String symbol, @PathVariable String dateString) {
+  @GetMapping("/daily/{symbol}/{dateString}")
+  public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
+    Date date = parseDate(dateString, "yyyy-MM-dd");
+
+    return stockRepository.getAggregateData(symbol, date,
+        new Date(date.getTime() + ONE_DAY_IN_MILLISECONDS));
+  }
+
+  @GetMapping("/monthly/{symbol}/{dateString}")
+  public AggregateQuote getAggregateMonthly(@PathVariable String symbol, @PathVariable String dateString) {
+    Date date = parseDate(dateString, "yyyy-MM");
+
+    log.info(date.toString());
+    log.info(new Date(date.getTime() + getMonthlyOffset(date)).toString());
+
+    return stockRepository.getAggregateData(symbol, date,
+        new Date(date.getTime() + getMonthlyOffset(date)));
+  }
+
+  private Date parseDate(String dateString, String pattern) {
     Date parsedDate = new Date();
     try {
-      parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+      parsedDate = new SimpleDateFormat(pattern).parse(dateString);
     } catch (ParseException e) {
       log.error("Failed to parse date in url. Stacktrace:");
       e.printStackTrace();
     }
+    return parsedDate;
+  }
 
-    return stockRepository.getAggregateData(symbol, parsedDate,
-        new Date(parsedDate.getTime() + ONE_DAY_IN_MILLISECONDS));
+  private long getMonthlyOffset(Date date) {
+    Calendar calendar = new GregorianCalendar();
+    calendar.setTime(date);
+    return ONE_DAY_IN_MILLISECONDS * calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
   }
 }

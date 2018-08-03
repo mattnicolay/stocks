@@ -30,13 +30,15 @@ import javax.persistence.TemporalType;
     name = "Quote.getAggregateData",
     query = "SELECT symbol, maxPrice, minPrice, totalVolume, closingPrice, date\n"
         + "FROM\n"
-        + "(SELECT symbol, MAX(price) AS maxPrice, MIN(price) AS minPrice, SUM(VOLUME) AS totalVolume, MIN(date) as date\n"
+        + "(SELECT symbol, MAX(price) AS maxPrice, MIN(price) AS minPrice, SUM(VOLUME) AS totalVolume\n"
         + "FROM stocks\n"
-        + "WHERE symbol = :symbol AND date >= :date AND date < :dayAfterDate\n) s1\n"
+        + "WHERE symbol = :symbol AND date BETWEEN :fromDate AND :toDate\n) s1\n"
         + "JOIN\n"
-        + "(SELECT price AS closingPrice, MAX(date)\n"
+        + "(SELECT price AS closingPrice, date\n"
         + " FROM stocks\n"
-        + " WHERE symbol = :symbol AND date < :dayAfterDate\n) s2",
+        + " WHERE symbol = :symbol AND date < :toDate\n"
+        + "ORDER BY date DESC\n"
+        + "LIMIT 1) s2",
     resultSetMapping = "AggregateQuoteMapping"
 )
 public class Quote {
