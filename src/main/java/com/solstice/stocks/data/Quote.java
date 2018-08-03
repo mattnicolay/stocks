@@ -1,11 +1,13 @@
 package com.solstice.stocks.data;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity(name = "Quote")
 @Table(name = "stocks")
@@ -20,13 +22,15 @@ public class Quote {
   private double price;
   @Column(nullable = false)
   private int volume;
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
-  private Timestamp date;
+  private Date date;
+
 
   public Quote() {
   }
 
-  public Quote(String symbol, double price, int volume, Timestamp date) {
+  public Quote(String symbol, double price, int volume, Date date) {
     this.symbol = symbol;
     this.price = price;
     this.volume = volume;
@@ -61,11 +65,11 @@ public class Quote {
     this.volume = volume;
   }
 
-  public Timestamp getDate() {
+  public Date getDate() {
     return date;
   }
 
-  public void setDate(Timestamp date) {
+  public void setDate(Date date) {
     this.date = date;
   }
 }

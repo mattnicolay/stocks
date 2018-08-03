@@ -2,7 +2,7 @@ package com.solstice.stocks.repository;
 
 import com.solstice.stocks.data.AggregateQuote;
 import com.solstice.stocks.data.Quote;
-import java.sql.Timestamp;
+import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +13,6 @@ public interface StockRepository extends CrudRepository<Quote, Integer> {
       + "FROM Quote\n"
       + "WHERE symbol = :symbol AND date BETWEEN :date AND :dayAfterDate\n"
       + "GROUP BY symbol")
-  AggregateQuote getAggregateData(@Param("symbol") String symbol,@Param("date") Timestamp date, @Param("dayAfterDate") Timestamp dayAfterDate);
+  AggregateQuote getAggregateData(@Param("symbol") String symbol,@Param("date") Date date, @Param("dayAfterDate") Date dayAfterDate);
 
 }

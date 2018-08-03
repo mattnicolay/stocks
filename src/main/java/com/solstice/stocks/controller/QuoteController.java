@@ -5,7 +5,6 @@ import com.solstice.stocks.repository.StockRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.Timestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +32,8 @@ public class QuoteController {
       log.error("Failed to parse date in url. Stacktrace:");
       e.printStackTrace();
     }
-    Timestamp date = new Timestamp(parsedDate.getTime());
 
-
-    return stockRepository.getAggregateData(symbol, date,
-        new Timestamp(date.getTime() + ONE_DAY_IN_MILLISECONDS));
+    return stockRepository.getAggregateData(symbol, parsedDate,
+        new Date(parsedDate.getTime() + ONE_DAY_IN_MILLISECONDS));
   }
 }
