@@ -3,25 +3,27 @@ package com.solstice.stocks.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
-
 public class AggregateQuote {
 
-  @JsonProperty("symbol")
+  @JsonProperty("Symbol")
   private String symbol;
-  @JsonProperty("highestPrice")
-  private double highestPrice;
-  @JsonProperty("lowestPrice")
-  private double lowestPrice;
-  @JsonProperty("totalVolume")
-  private long totalVolume;
-  @JsonProperty("date")
+  @JsonProperty("Highest Price")
+  private double maxPrice;
+  @JsonProperty("Lowest Price")
+  private double minPrice;
+  @JsonProperty("Closing Price")
+  private double closingPrice;
+  @JsonProperty("Total Volume")
+  private int totalVolume;
+  @JsonProperty("Date")
   private Date date;
 
-  public AggregateQuote(String symbol, double highestPrice, double lowestPrice, long totalVolume,
+  public AggregateQuote(String symbol, double maxPrice, double minPrice, double closingPrice, int totalVolume,
       Date date) {
     this.symbol = symbol;
-    this.highestPrice = highestPrice;
-    this.lowestPrice = lowestPrice;
+    this.maxPrice = maxPrice;
+    this.minPrice = minPrice;
+    this.closingPrice = closingPrice;
     this.totalVolume = totalVolume;
     this.date = date;
   }
@@ -34,27 +36,35 @@ public class AggregateQuote {
     this.symbol = symbol;
   }
 
-  public double getHighestPrice() {
-    return highestPrice;
+  public double getMaxPrice() {
+    return maxPrice;
   }
 
-  public void setHighestPrice(double highestPrice) {
-    this.highestPrice = highestPrice;
+  public void setMaxPrice(double maxPrice) {
+    this.maxPrice = maxPrice;
   }
 
-  public double getLowestPrice() {
-    return lowestPrice;
+  public double getMinPrice() {
+    return minPrice;
   }
 
-  public void setLowestPrice(double lowestPrice) {
-    this.lowestPrice = lowestPrice;
+  public void setMinPrice(double minPrice) {
+    this.minPrice = minPrice;
   }
 
-  public long getTotalVolume() {
+  public double getClosingPrice() {
+    return closingPrice;
+  }
+
+  public void setClosingPrice(double closingPrice) {
+    this.closingPrice = closingPrice;
+  }
+
+  public int getTotalVolume() {
     return totalVolume;
   }
 
-  public void setTotalVolume(long totalVolume) {
+  public void setTotalVolume(int totalVolume) {
     this.totalVolume = totalVolume;
   }
 

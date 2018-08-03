@@ -2,15 +2,43 @@ package com.solstice.stocks.data;
 
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity(name = "Quote")
 @Table(name = "stocks")
+@SqlResultSetMapping(name="AggregateQuoteMapping", classes = {
+    @ConstructorResult(targetClass = AggregateQuote.class,
+        columns = {
+            @ColumnResult(name="symbol", type=String.class),
+            @ColumnResult(name="maxPrice", type=Double.class),
+            @ColumnResult(name="minPrice", type=Double.class),
+            @ColumnResult(name="closingPrice", type=Double.class),
+            @ColumnResult(name="totalVolume", type=Integer.class),
+            @ColumnResult(name="date", type=Date.class)
+        })
+})
+@NamedNativeQuery(
+    name = "Quote.getAggregateData",
+    query = "SELECT symbol, maxPrice, minPrice, totalVolume, closingPrice, date\n"
+        + "FROM\n"
+        + "(SELECT symbol, MAX(price) AS maxPrice, MIN(price) AS minPrice, SUM(VOLUME) AS totalVolume, MIN(date) as date\n"
+        + "FROM stocks\n"
+        + "WHERE symbol = :symbol AND date >= :date AND date < :dayAfterDate\n) s1\n"
+        + "JOIN\n"
+        + "(SELECT price AS closingPrice, MAX(date)\n"
+        + " FROM stocks\n"
+        + " WHERE symbol = :symbol AND date < :dayAfterDate\n) s2",
+    resultSetMapping = "AggregateQuoteMapping"
+)
 public class Quote {
 
   @Id

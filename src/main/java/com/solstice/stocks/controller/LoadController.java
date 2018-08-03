@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @PropertySource("classpath:application.properties")
 public class LoadController {
 
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
-  private final String jsonFilePath = this.getClass().getClassLoader()
-      .getResource("stocks.json").getFile();
-
   @Value("${dataset-url}")
   private URL datasetUrl;
   private JsonService jsonService;
@@ -42,18 +38,7 @@ public class LoadController {
 
 
   @PostMapping
-  public ResponseEntity<List<Quote>> load(@RequestParam(required = false) boolean refresh) {
-    if (refresh) {
-      try{
-        log.info("Refreshing json dataset from url");
-        ReadableByteChannel rbc = Channels.newChannel(datasetUrl.openStream());
-        FileOutputStream fos = new FileOutputStream(jsonFilePath);
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-      } catch (IOException e) {
-        log.error("Failed to refresh dataset from url. Stacktrace: ");
-        e.printStackTrace();
-      }
-    }
+  public ResponseEntity<List<Quote>> load() {
     List<Quote> quotes = jsonService.getStocksFromJson();
     stockRepository.saveAll(quotes);
     return new ResponseEntity<>(quotes, HttpStatus.CREATED);
