@@ -37,9 +37,6 @@ public class QuoteController {
   public AggregateQuote getAggregateMonthly(@PathVariable String symbol, @PathVariable String dateString) {
     Date date = parseDate(dateString, "yyyy-MM");
 
-    log.info(date.toString());
-    log.info(new Date(date.getTime() + getMonthlyOffset(date)).toString());
-
     return stockRepository.getAggregateData(symbol, date,
         new Date(date.getTime() + getMonthlyOffset(date)));
   }
