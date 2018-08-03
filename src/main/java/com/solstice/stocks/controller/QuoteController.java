@@ -22,9 +22,9 @@ public class QuoteController {
 
   @GetMapping("/daily/{symbol}/{dateString}")
   public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
-    Date date = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
-
-    return quoteRepository.getAggregateData(symbol, date, dateUtilService.getNextDay(date));
+    Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
+    Date toDate = dateUtilService.getNextDay(fromDate);
+    return quoteRepository.getAggregateData(symbol, fromDate, toDate);
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
