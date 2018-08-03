@@ -24,6 +24,7 @@ public class QuoteController {
   public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
     Date toDate = dateUtilService.getNextDay(fromDate);
+
     return quoteRepository.getAggregateData(symbol, fromDate, toDate);
   }
 
