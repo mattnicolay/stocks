@@ -23,16 +23,16 @@ public class QuoteController {
   @GetMapping("/daily/{symbol}/{dateString}")
   public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
-    Date toDate = dateUtilService.getNextDay(fromDate);
+//    Date toDate = dateUtilService.getNextDay(fromDate);
 
-    return quoteRepository.getAggregateData(symbol, fromDate, toDate);
+    return quoteRepository.getDailyAggregateData(symbol, fromDate);
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
   public AggregateQuote getAggregateMonthly(@PathVariable String symbol, @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM");
-    Date toDate = dateUtilService.getNextMonth(fromDate);
+//    Date toDate = dateUtilService.getNextMonth(fromDate);
 
-    return quoteRepository.getAggregateData(symbol, fromDate, toDate);
+    return quoteRepository.getMonthlyAggregateData(symbol, fromDate);
   }
 }
