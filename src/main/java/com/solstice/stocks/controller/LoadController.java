@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/load")
+@RequestMapping("/v1/load")
 public class LoadController {
 
   private JsonService jsonService;

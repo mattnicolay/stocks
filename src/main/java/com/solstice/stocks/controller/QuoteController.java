@@ -7,9 +7,11 @@ import com.solstice.stocks.service.DateUtilService;
 import java.util.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/v1")
 public class QuoteController {
 
 
@@ -23,7 +25,7 @@ public class QuoteController {
     this.dateUtilService = dateUtilService;
   }
 
-  @GetMapping("/daily/{symbol}/{dateString}")
+  @GetMapping("/{symbol}/{dateString}")
   public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
     Date toDate = dateUtilService.getNextDay(fromDate);
