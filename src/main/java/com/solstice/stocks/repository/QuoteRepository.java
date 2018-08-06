@@ -9,5 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface QuoteRepository extends CrudRepository<Quote, Integer> {
   @Query(nativeQuery = true)
-  AggregateQuote getAggregateData(@Param("symbolId") int symbolId, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+  AggregateQuote getAggregateData(
+      @Param("symbolId") int symbolId,
+      @Param("fromDate") Date fromDate,
+      @Param("toDate") Date toDate);
 }

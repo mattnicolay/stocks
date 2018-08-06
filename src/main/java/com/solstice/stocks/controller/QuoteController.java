@@ -19,25 +19,32 @@ public class QuoteController {
   private SymbolRepository symbolRepository;
   private DateUtilService dateUtilService;
 
-  public QuoteController(QuoteRepository quoteRepository, SymbolRepository symbolRepository, DateUtilService dateUtilService) {
+  public QuoteController(QuoteRepository quoteRepository, SymbolRepository symbolRepository,
+      DateUtilService dateUtilService) {
     this.quoteRepository = quoteRepository;
     this.symbolRepository = symbolRepository;
     this.dateUtilService = dateUtilService;
   }
 
   @GetMapping("/{symbol}/{dateString}")
-  public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
+  public AggregateQuote getAggregate(
+      @PathVariable String symbol,
+      @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
     Date toDate = dateUtilService.getNextDay(fromDate);
 
-    return quoteRepository.getAggregateData(symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
+    return quoteRepository.getAggregateData(
+        symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
-  public AggregateQuote getAggregateMonthly(@PathVariable String symbol, @PathVariable String dateString) {
+  public AggregateQuote getAggregateMonthly(
+      @PathVariable String symbol,
+      @PathVariable String dateString) {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM");
     Date toDate = dateUtilService.getNextMonth(fromDate);
 
-    return quoteRepository.getAggregateData(symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
+    return quoteRepository.getAggregateData(
+        symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
   }
 }

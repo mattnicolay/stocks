@@ -21,7 +21,8 @@ public class LoadController {
   private DatasetUtilService datasetUtilService;
   private QuoteRepository quoteRepository;
 
-  public LoadController(JsonService jsonService, DatasetUtilService datasetUtilService, QuoteRepository quoteRepository) {
+  public LoadController(JsonService jsonService, DatasetUtilService datasetUtilService,
+      QuoteRepository quoteRepository) {
     this.jsonService = jsonService;
     this.datasetUtilService = datasetUtilService;
     this.quoteRepository = quoteRepository;
