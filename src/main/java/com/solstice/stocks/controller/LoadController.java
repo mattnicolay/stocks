@@ -31,7 +31,7 @@ public class LoadController {
   @PostMapping
   public ResponseEntity<List<Quote>> load() {
     List<RawQuote> rawQuotes = jsonService.getStocksFromJson();
-    List<Quote> quotes = datasetUtilService.convertQuotesFromRawToEntity(rawQuotes);
+    List<Quote> quotes = datasetUtilService.convertDatasetFromRawToEntities(rawQuotes);
     quoteRepository.saveAll(quotes);
     return new ResponseEntity<>(quotes, HttpStatus.CREATED);
   }

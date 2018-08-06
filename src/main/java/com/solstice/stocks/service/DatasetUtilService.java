@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DatasetUtilService {
-  public List<Quote> convertQuotesFromRawToEntity(List<RawQuote> rawQuotes) {
+  public List<Quote> convertDatasetFromRawToEntities(List<RawQuote> rawQuotes) {
     Symbol symbol = null;
     List<Quote> quotes = new ArrayList<>();
     for (RawQuote rawQuote : rawQuotes) {
