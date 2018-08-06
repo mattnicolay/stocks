@@ -1,12 +1,17 @@
 package com.solstice.stocks.data;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
@@ -29,25 +34,26 @@ import javax.persistence.TemporalType;
 @NamedNativeQuery(
     name = "Quote.getAggregateData",
     query = "SELECT symbol, maxPrice, minPrice, totalVolume, closingPrice, date\n"
-        + "FROM\n"
-        + "(SELECT symbol, MAX(price) AS maxPrice, MIN(price) AS minPrice, SUM(VOLUME) AS totalVolume\n"
+        + "FROM symbols,\n"
+        + "(SELECT symbol_id, MAX(price) AS maxPrice, MIN(price) AS minPrice, SUM(volume) AS totalVolume\n"
         + "FROM stocks\n"
-        + "WHERE symbol = :symbol AND date BETWEEN :fromDate AND :toDate\n) s1\n"
-        + "JOIN\n"
+        + "WHERE symbol_id = :symbolId AND date BETWEEN :fromDate AND :toDate\n) s1, \n"
         + "(SELECT price AS closingPrice, date\n"
-        + " FROM stocks\n"
-        + " WHERE symbol = :symbol AND date < :toDate\n"
+        + "FROM stocks\n"
+        + "WHERE symbol_id = :symbolId AND date < :toDate\n"
         + "ORDER BY date DESC\n"
-        + "LIMIT 1) s2",
+        + "LIMIT 1) s2\n"
+        + "WHERE s1.symbol_id = symbols.id",
     resultSetMapping = "AggregateQuoteMapping"
 )
 public class Quote {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
-  @Column(nullable = false)
-  private String symbol;
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name="symbolId", nullable=false)
+  private Symbol symbol;
   @Column(nullable = false)
   private double price;
   @Column(nullable = false)
@@ -60,7 +66,7 @@ public class Quote {
   public Quote() {
   }
 
-  public Quote(String symbol, double price, int volume, Date date) {
+  public Quote(Symbol symbol, double price, int volume, Date date) {
     this.symbol = symbol;
     this.price = price;
     this.volume = volume;
@@ -71,11 +77,11 @@ public class Quote {
     return id;
   }
 
-  public String getSymbol() {
+  public Symbol getSymbol() {
     return symbol;
   }
 
-  public void setSymbol(String symbol) {
+  public void setSymbol(Symbol symbol) {
     this.symbol = symbol;
   }
 

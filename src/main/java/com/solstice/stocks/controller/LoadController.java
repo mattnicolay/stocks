@@ -1,7 +1,9 @@
 package com.solstice.stocks.controller;
 
 import com.solstice.stocks.data.Quote;
+import com.solstice.stocks.data.RawQuote;
 import com.solstice.stocks.repository.QuoteRepository;
+import com.solstice.stocks.service.DatasetUtilService;
 import com.solstice.stocks.service.JsonService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -16,17 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoadController {
 
   private JsonService jsonService;
+  private DatasetUtilService datasetUtilService;
   private QuoteRepository quoteRepository;
 
-  public LoadController(JsonService jsonService, QuoteRepository quoteRepository) {
+  public LoadController(JsonService jsonService, DatasetUtilService datasetUtilService, QuoteRepository quoteRepository) {
     this.jsonService = jsonService;
+    this.datasetUtilService = datasetUtilService;
     this.quoteRepository = quoteRepository;
   }
 
 
   @PostMapping
   public ResponseEntity<List<Quote>> load() {
-    List<Quote> quotes = jsonService.getStocksFromJson();
+    List<RawQuote> rawQuotes = jsonService.getStocksFromJson();
+    List<Quote> quotes = datasetUtilService.convertQuotesFromRawToEntity(rawQuotes);
     quoteRepository.saveAll(quotes);
     return new ResponseEntity<>(quotes, HttpStatus.CREATED);
   }

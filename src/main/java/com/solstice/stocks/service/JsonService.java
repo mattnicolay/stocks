@@ -2,7 +2,7 @@ package com.solstice.stocks.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solstice.stocks.data.Quote;
+import com.solstice.stocks.data.RawQuote;
 import java.net.URL;
 import java.util.List;
 import org.slf4j.Logger;
@@ -19,12 +19,12 @@ public class JsonService {
   private URL datasetUrl;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public List<Quote> getStocksFromJson() {
-    List<Quote> quotes = null;
+  public List<RawQuote> getStocksFromJson() {
+    List<RawQuote> quotes = null;
     try {
       ObjectMapper jsonMapper = new ObjectMapper();
       // read JSON array from url and save as a List<Quote>
-      quotes = jsonMapper.readValue(datasetUrl, new TypeReference<List<Quote>>(){});
+      quotes = jsonMapper.readValue(datasetUrl, new TypeReference<List<RawQuote>>(){});
     } catch (Exception e) {
       log.error("Error reading from json file. Stacktrace: ");
       e.printStackTrace();

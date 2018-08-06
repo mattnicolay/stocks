@@ -2,6 +2,7 @@ package com.solstice.stocks.controller;
 
 import com.solstice.stocks.data.AggregateQuote;
 import com.solstice.stocks.repository.QuoteRepository;
+import com.solstice.stocks.repository.SymbolRepository;
 import com.solstice.stocks.service.DateUtilService;
 import java.util.Date;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,12 @@ public class QuoteController {
 
 
   private QuoteRepository quoteRepository;
+  private SymbolRepository symbolRepository;
   private DateUtilService dateUtilService;
 
-  public QuoteController(QuoteRepository quoteRepository, DateUtilService dateUtilService) {
+  public QuoteController(QuoteRepository quoteRepository, SymbolRepository symbolRepository, DateUtilService dateUtilService) {
     this.quoteRepository = quoteRepository;
+    this.symbolRepository = symbolRepository;
     this.dateUtilService = dateUtilService;
   }
 
@@ -25,7 +28,7 @@ public class QuoteController {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
     Date toDate = dateUtilService.getNextDay(fromDate);
 
-    return quoteRepository.getAggregateData(symbol, fromDate, toDate);
+    return quoteRepository.getAggregateData(symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
@@ -33,6 +36,6 @@ public class QuoteController {
     Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM");
     Date toDate = dateUtilService.getNextMonth(fromDate);
 
-    return quoteRepository.getAggregateData(symbol, fromDate, toDate);
+    return quoteRepository.getAggregateData(symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
   }
 }
