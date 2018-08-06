@@ -6,6 +6,7 @@ import com.solstice.stocks.service.DateUtilService;
 import java.util.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +21,8 @@ public class QuoteController {
     this.dateUtilService = dateUtilService;
   }
 
-  @GetMapping("/{timePeriod}/{symbol}/{dateString}")
-  public AggregateQuote getAggregate(@PathVariable String timePeriod, @PathVariable String symbol, @PathVariable String dateString) {
+  @GetMapping("{symbol}/{dateString}")
+  public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString, @RequestParam String timePeriod) {
     if (timePeriod.equalsIgnoreCase("daily")) {
       Date date = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
 
