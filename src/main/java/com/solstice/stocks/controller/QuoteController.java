@@ -20,19 +20,17 @@ public class QuoteController {
     this.dateUtilService = dateUtilService;
   }
 
-  @GetMapping("/daily/{symbol}/{dateString}")
-  public AggregateQuote getAggregate(@PathVariable String symbol, @PathVariable String dateString) {
-    Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
-//    Date toDate = dateUtilService.getNextDay(fromDate);
+  @GetMapping("/{timePeriod}/{symbol}/{dateString}")
+  public AggregateQuote getAggregate(@PathVariable String timePeriod, @PathVariable String symbol, @PathVariable String dateString) {
+    if (timePeriod.equalsIgnoreCase("daily")) {
+      Date date = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
 
-    return quoteRepository.getDailyAggregateData(symbol, fromDate);
-  }
+      return quoteRepository.getDailyAggregateData(symbol, date);
+    } else if (timePeriod.equalsIgnoreCase("monthly")) {
+      Date date = dateUtilService.parseDate(dateString, "yyyy-MM");
 
-  @GetMapping("/monthly/{symbol}/{dateString}")
-  public AggregateQuote getAggregateMonthly(@PathVariable String symbol, @PathVariable String dateString) {
-    Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM");
-//    Date toDate = dateUtilService.getNextMonth(fromDate);
-
-    return quoteRepository.getMonthlyAggregateData(symbol, fromDate);
+      return quoteRepository.getMonthlyAggregateData(symbol, date);
+    }
+    return null;
   }
 }
