@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @PropertySource("classpath:application.properties")
-public class JsonService {
+public class JsonUtilService {
 
   @Value("${dataset-url}")
   private URL datasetUrl;
