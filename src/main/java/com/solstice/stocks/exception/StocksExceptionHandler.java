@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice(annotations = RestController.class)
 public class StocksExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = {IOException.class})
-  protected ResponseEntity<Object> handleJsonError(Exception ex, WebRequest request) {
+  protected ResponseEntity<Object> handleIOException(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n "
         + "Encountered error with message: \n"
         + ex.getMessage();
@@ -28,7 +28,7 @@ public class StocksExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(value = {ParseException.class})
-  protected ResponseEntity<Object> handleBadDate(Exception ex, WebRequest request) {
+  protected ResponseEntity<Object> handleParseException(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n "
         + "<p>Encountered error with message: </p>\n"
         + ex.getMessage();
@@ -42,7 +42,7 @@ public class StocksExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(value = {NullPointerException.class})
-  protected ResponseEntity<Object> handleEmptyDataset(Exception ex, WebRequest request) {
+  protected ResponseEntity<Object> handleNullPointerException(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n"
         + "<p>Encountered null value.</p>\n"
         + "<p>Make sure the database has been populated.";
