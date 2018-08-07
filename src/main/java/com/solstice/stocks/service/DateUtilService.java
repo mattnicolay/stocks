@@ -1,5 +1,6 @@
 package com.solstice.stocks.service;
 
+import com.solstice.stocks.data.TimePeriod;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,11 +17,22 @@ public class DateUtilService {
     return new SimpleDateFormat(pattern).parse(dateString);
   }
 
-  public Date getNextDay(Date date) {
+  public Date getNext(TimePeriod timePeriod, Date date) {
+    switch(timePeriod) {
+      case DAY:
+        return getNextDay(date);
+      case MONTH:
+        return getNextMonth(date);
+      default:
+        return null;
+    }
+  }
+
+  private Date getNextDay(Date date) {
     return new Date(date.getTime() + ONE_DAY_IN_MILLISECONDS);
   }
 
-  public Date getNextMonth(Date date) {
+  private Date getNextMonth(Date date) {
     Calendar calendar = new GregorianCalendar();
     calendar.setTime(date);
     long monthOffset = ONE_DAY_IN_MILLISECONDS * calendar.getActualMaximum(Calendar.DAY_OF_MONTH);

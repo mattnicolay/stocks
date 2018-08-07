@@ -1,6 +1,7 @@
 package com.solstice.stocks.controller;
 
 import com.solstice.stocks.data.AggregateQuote;
+import com.solstice.stocks.data.TimePeriod;
 import com.solstice.stocks.repository.QuoteRepository;
 import com.solstice.stocks.repository.SymbolRepository;
 import com.solstice.stocks.service.DateUtilService;
@@ -31,21 +32,28 @@ public class QuoteController {
   public AggregateQuote getAggregateDaily(
       @PathVariable String symbol,
       @PathVariable String dateString) throws ParseException {
-    Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM-dd");
-    Date toDate = dateUtilService.getNextDay(fromDate);
 
-    return quoteRepository.getAggregateData(
-        symbolRepository.findBySymbol(symbol).getId(), fromDate, toDate);
+    return getAggregate(symbol, dateString, TimePeriod.DAY, "yyyy-MM-dd");
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
   public AggregateQuote getAggregateMonthly(
       @PathVariable String symbol,
       @PathVariable String dateString) throws ParseException {
-    Date fromDate = dateUtilService.parseDate(dateString, "yyyy-MM");
-    Date toDate = dateUtilService.getNextMonth(fromDate);
 
-    return quoteRepository.getAggregateData(
-        symbolRepository.findBySymbol(symbol).getId(), fromDate, toDate);
+    return getAggregate(symbol, dateString, TimePeriod.MONTH, "yyyy-MM");
+  }
+
+  private AggregateQuote getAggregate(
+      String symbol,
+      String dateString,
+      TimePeriod timePeriod,
+      String pattern)
+      throws ParseException {
+    int symbolId = symbolRepository.findBySymbol(symbol).getId();
+    Date fromDate = dateUtilService.parseDate(dateString, pattern);
+    Date toDate = dateUtilService.getNext(timePeriod, fromDate);
+
+    return quoteRepository.getAggregateData(symbolId, fromDate, toDate);
   }
 }
