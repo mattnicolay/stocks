@@ -17,7 +17,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   @ExceptionHandler(value = {IOException.class})
   protected ResponseEntity<Object> handleJsonError(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n "
-        + "<p>Could not deserialize JSON document.</p>";
+        + "Encountered error with message: \n"
+        + ex.getMessage();
+    ex.printStackTrace();
     return handleExceptionInternal(
         ex,
         bodyOfResponse,
@@ -29,7 +31,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   @ExceptionHandler(value = {ParseException.class})
   protected ResponseEntity<Object> handleBadDate(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n "
-        + "<p>Improper date format provided. Needed: \"yyyy-MM-dd\"</p>";
+        + "<p>Encountered error with message: </p>\n"
+        + ex.getMessage();
+    ex.printStackTrace();
     return handleExceptionInternal(
         ex,
         bodyOfResponse,
@@ -38,11 +42,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         request);
   }
 
-  @ExceptionHandler(value = {AopInvocationException.class})
+  @ExceptionHandler(value = {NullPointerException.class})
   protected ResponseEntity<Object> handleEmptyDataset(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n"
-        + "<p>Symbol table returned null value when searching for given symbol.</p>\n"
-        + "<p>Make sure the symbol table has been populated.</p>";
+        + "<p>Encountered null value.</p>\n"
+        + "<p>Make sure the database has been populated.";
+    ex.printStackTrace();
     return handleExceptionInternal(
         ex,
         bodyOfResponse,

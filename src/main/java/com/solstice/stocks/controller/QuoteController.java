@@ -35,7 +35,7 @@ public class QuoteController {
     Date toDate = dateUtilService.getNextDay(fromDate);
 
     return quoteRepository.getAggregateData(
-        symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
+        symbolRepository.findBySymbol(symbol).getId(), fromDate, toDate);
   }
 
   @GetMapping("/monthly/{symbol}/{dateString}")
@@ -46,6 +46,6 @@ public class QuoteController {
     Date toDate = dateUtilService.getNextMonth(fromDate);
 
     return quoteRepository.getAggregateData(
-        symbolRepository.findIdBySymbol(symbol), fromDate, toDate);
+        symbolRepository.findBySymbol(symbol).getId(), fromDate, toDate);
   }
 }
