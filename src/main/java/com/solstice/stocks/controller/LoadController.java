@@ -5,6 +5,7 @@ import com.solstice.stocks.data.RawQuote;
 import com.solstice.stocks.repository.QuoteRepository;
 import com.solstice.stocks.service.DatasetUtilService;
 import com.solstice.stocks.service.JsonService;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class LoadController {
 
 
   @PostMapping
-  public ResponseEntity<List<Quote>> load() {
+  public ResponseEntity<List<Quote>> load() throws IOException {
     List<RawQuote> rawQuotes = jsonService.getStocksFromJson();
     List<Quote> quotes = datasetUtilService.convertDatasetFromRawToEntities(rawQuotes);
     quoteRepository.saveAll(quotes);
