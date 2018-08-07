@@ -1,5 +1,6 @@
 package com.solstice.stocks.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,16 +51,21 @@ public class Quote {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @JsonProperty("ID")
   private int id;
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name="symbolId", nullable=false)
+  @JsonProperty("Symbol")
   private Symbol symbol;
   @Column(nullable = false)
+  @JsonProperty("Price")
   private double price;
   @Column(nullable = false)
+  @JsonProperty("Volume")
   private int volume;
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
+  @JsonProperty("Date")
   private Date date;
 
 

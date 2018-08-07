@@ -17,14 +17,7 @@ public class DateUtilService {
   private final long ONE_DAY_IN_MILLISECONDS = 86400000L;
 
   public Date parseDate(String dateString, String pattern) throws ParseException {
-    Date parsedDate = new Date();
-//    try {
-    parsedDate = new SimpleDateFormat(pattern).parse(dateString);
-//    } catch (ParseException e) {
-//      log.error("Failed to parse date in url. Stacktrace:");
-//      e.printStackTrace();
-//    }
-    return parsedDate;
+    return new SimpleDateFormat(pattern).parse(dateString);
   }
 
   public Date getNextDay(Date date) {

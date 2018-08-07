@@ -1,6 +1,7 @@
 package com.solstice.stocks.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +15,10 @@ import javax.persistence.Table;
 public class Symbol {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @JsonProperty("Symbol ID")
   private int id;
   @Column(nullable = false)
+  @JsonProperty("Symbol")
   private String symbol;
 
   public Symbol() {}
