@@ -51,7 +51,7 @@ public class Quote {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @JsonProperty("ID")
+  @JsonProperty("Quote ID")
   private int id;
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name="symbolId", nullable=false)
