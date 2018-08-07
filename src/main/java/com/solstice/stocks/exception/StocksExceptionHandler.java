@@ -2,7 +2,6 @@ package com.solstice.stocks.exception;
 
 import java.io.IOException;
 import java.text.ParseException;
-import org.springframework.aop.AopInvocationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
