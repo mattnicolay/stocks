@@ -13,7 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice(annotations = RestController.class)
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class StocksExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = {IOException.class})
   protected ResponseEntity<Object> handleJsonError(Exception ex, WebRequest request) {
     String bodyOfResponse = "<h1>ERROR:</h1>\n "
